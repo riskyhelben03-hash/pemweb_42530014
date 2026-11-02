@@ -1,0 +1,57 @@
+<%- include('../../partials/header', { title }) %>
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">FORMULIR BUKU</p>
+    <h1><%= mode === 'tambah' ? 'Tambah Buku' : 'Ubah Data Buku' %></h1>
+    <p class="muted">Lengkapi informasi buku pada formulir berikut.</p>
+  </div>
+  <a class="button" href="/">← Kembali</a>
+</section>
+
+<% if (error) { %><div class="alert error"><%= error %></div><% } %>
+
+<form class="panel form-grid" method="POST"
+      action="<%= mode === 'tambah' ? '/buku/tambah' : '/buku/' + buku.id_buku + '/ubah' %>">
+  <div class="field full">
+    <label for="judul">Judul buku *</label>
+    <input id="judul" name="judul" maxlength="200" required value="<%= buku.judul || '' %>">
+  </div>
+  <div class="field">
+    <label for="penulis">Penulis *</label>
+    <input id="penulis" name="penulis" maxlength="150" required value="<%= buku.penulis || '' %>">
+  </div>
+  <div class="field">
+    <label for="penerbit">Penerbit *</label>
+    <input id="penerbit" name="penerbit" maxlength="150" required value="<%= buku.penerbit || '' %>">
+  </div>
+  <div class="field">
+    <label for="tahun_terbit">Tahun terbit *</label>
+    <input id="tahun_terbit" name="tahun_terbit" type="number" min="1000"
+           max="<%= new Date().getFullYear() %>" required value="<%= buku.tahun_terbit || '' %>">
+  </div>
+  <div class="field">
+    <label for="isbn">ISBN</label>
+    <input id="isbn" name="isbn" maxlength="30" value="<%= buku.isbn || '' %>">
+  </div>
+  <div class="field">
+    <label for="kategori">Kategori *</label>
+    <select id="kategori" name="kategori" required>
+      <% ['Fiksi','Nonfiksi','Pendidikan','Teknologi','Sejarah','Lainnya'].forEach(k => { %>
+        <option value="<%= k %>" <%= buku.kategori === k ? 'selected' : '' %>><%= k %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="field">
+    <label for="stok">Stok *</label>
+    <input id="stok" name="stok" type="number" min="0" required value="<%= buku.stok ?? 0 %>">
+  </div>
+  <div class="field">
+    <label for="harga">Harga (Rp) *</label>
+    <input id="harga" name="harga" type="number" min="0" step="0.01" required value="<%= buku.harga ?? 0 %>">
+  </div>
+  <div class="form-actions full">
+    <a class="button" href="/">Batal</a>
+    <button class="button primary" type="submit"><%= mode === 'tambah' ? 'Simpan Buku' : 'Simpan Perubahan' %></button>
+  </div>
+</form>
+<%- include('../../partials/footer') %>

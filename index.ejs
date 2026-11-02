@@ -1,0 +1,54 @@
+<%- include('../../partials/header', { title }) %>
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">PENGELOLAAN KOLEKSI</p>
+    <h1>Data Buku Perpustakaan</h1>
+    <p class="muted">Tambah, lihat, ubah, dan hapus data koleksi buku.</p>
+  </div>
+  <a class="button primary" href="/buku/tambah">+ Tambah Buku</a>
+</section>
+
+<% if (pesan) { %><div class="alert success"><%= pesan %></div><% } %>
+
+<div class="panel">
+  <% if (buku.length === 0) { %>
+    <div class="empty">
+      <h2>Belum ada data buku</h2>
+      <p>Mulai dengan menambahkan buku pertama ke perpustakaan.</p>
+      <a class="button primary" href="/buku/tambah">Tambah Buku</a>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th><th>Judul</th><th>Penulis</th><th>Penerbit</th>
+            <th>Tahun</th><th>Kategori</th><th>Stok</th><th>Harga</th><th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% buku.forEach((item, i) => { %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td class="book-title"><%= item.judul %></td>
+              <td><%= item.penulis %></td>
+              <td><%= item.penerbit %></td>
+              <td><%= item.tahun_terbit %></td>
+              <td><span class="tag"><%= item.kategori %></span></td>
+              <td><%= item.stok %></td>
+              <td>Rp <%= Number(item.harga).toLocaleString('id-ID') %></td>
+              <td class="actions">
+                <a class="button small" href="/buku/<%= item.id_buku %>/ubah">Ubah</a>
+                <form action="/buku/<%= item.id_buku %>/hapus" method="POST"
+                      onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                  <button class="button small danger" type="submit">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+<%- include('../../partials/footer') %>
